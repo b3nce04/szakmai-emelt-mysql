@@ -1,0 +1,34 @@
+13: 2p
+CREATE DATABASE parkolohaz
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_hungarian_ci;
+
+15: 3p
+SELECT count(id) as masfeles_parkolohelyek_szama
+FROM `parkolohely` 
+WHERE szelesseg=1.5;
+
+16: 4p
+UPDATE `parkolohely` 
+SET jarmutipusId=(
+    SELECT id
+    FROM `jarmutipus`
+    WHERE nev="Elektromos gépjármű"
+)
+WHERE felirat="P001";
+
+17: 3p
+SELECT datum, ar 
+FROM `foglalas` INNER JOIN felhasznalo ON foglalas.felhasznaloId=felhasznalo.id
+WHERE felhasznalo.nev="Kovács Anna";
+
+18: 8p
+SELECT felhasznalo.nev, sum(foglalas.ar) as szumma_tartozas
+FROM `parkolohely` 
+INNER JOIN jarmutipus ON jarmutipus.id=parkolohely.jarmutipusId
+INNER JOIN foglalas ON parkolohely.id=foglalas.parkolohelyId
+INNER JOIN felhasznalo ON foglalas.felhasznaloId=felhasznalo.id
+WHERE NOT foglalas.fizetve AND jarmutipus.nev="Motorkerékpár"
+GROUP BY felhasznalo.id
+ORDER BY szumma_tartozas DESC
+LIMIT 1;

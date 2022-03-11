@@ -1,0 +1,34 @@
+14: 2p
+CREATE DATABASE kettlebell
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_hungarian_ci;
+
+16: 3p
+SELECT count(id) as '20_kilos_felszerelesek_szama'
+FROM `felszereles` 
+WHERE suly=20;
+
+17: 3p
+SELECT honap, ar
+FROM `haviberlet` INNER JOIN vendeg ON vendeg.id=haviberlet.vendegId
+WHERE vendeg.nev="Tóth Levente";
+
+18: 2p
+UPDATE `kategoria` 
+SET nev="Fém kettlebell"
+WHERE id=1;
+
+19: 4p
+SELECT felszereles.nev, felszereles.suly, sum(idotartam) as szumma_nap
+FROM `kolcsonzes` INNER JOIN felszereles ON kolcsonzes.felszerelesId=felszereles.id
+GROUP BY felszereles.nev
+ORDER BY szumma_nap DESC
+LIMIT 5;
+
+20: 6p
+SELECT vendeg.nev, count(kolcsonzes.id) as visszahozando_db 
+FROM `kolcsonzes`INNER JOIN vendeg ON vendeg.id=kolcsonzes.vendegId
+WHERE NOT visszahozta
+GROUP BY vendeg.nev
+ORDER BY visszahozando_db DESC
+LIMIT 1;

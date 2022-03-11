@@ -1,0 +1,29 @@
+14: 3p
+CREATE DATABASE oldtimer
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_hungarian_ci;
+
+16: 3p
+SELECT count(id) as 'sportautok-szama'
+FROM `autok` 
+WHERE kategoriaId=4;
+
+17: 3p
+SELECT autok.nev, szin
+FROM `autok` INNER JOIN kategoriak ON kategoriak.id=autok.kategoriaId
+WHERE kategoriak.nev="Limuzin"
+GROUP BY autok.nev ASC;
+
+18: 2p
+INSERT INTO autok (rendszam, szin, kategoriaId, nev, evjarat, ar) VALUES ('OT44-01', 'Fekete-piros', 3, 'GMC Vandura Szupercsapat kiadás', 1983, 18000);
+
+19: 4p
+SELECT autok.nev, SUM(berlesek.mennyiseg) as mennyiseg
+FROM `autok` INNER JOIN berlesek ON berlesek.autoId=autok.id
+GROUP BY autok.nev
+ORDER BY mennyiseg DESC
+LIMIT 5;
+
+20: 5p
+SELECT SUM((berlesek.mennyiseg*autok.ar)+berlesek.biztositas) as 'osszes-bevetel', MAX((berlesek.biztositas/((berlesek.mennyiseg*autok.ar)+berlesek.biztositas))*100) as 'max-biztositas-arany'
+FROM `berlesek` INNER JOIN autok ON autok.id=berlesek.autoId

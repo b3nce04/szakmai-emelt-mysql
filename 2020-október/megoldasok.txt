@@ -1,0 +1,33 @@
+14: 2p
+CREATE DATABASE tesztauzem
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_hungarian_ci;
+
+16: 3p
+SELECT count(id) as felkilos_tesztak_szama
+FROM `tesztak` 
+WHERE kiszereles=500;
+
+17: 3p
+SELECT rendelesek.id, rendelesek.datum 
+FROM `rendelesek` INNER JOIN vevok ON rendelesek.vevoId=vevok.id
+WHERE vevok.nev="Juhász Zsombor";
+
+18: 2p
+INSERT INTO tesztak (nev, kiszereles, ar, kategoriaId) VALUES ('Piroska mama csigatésztája', 500, 530, 9);
+
+19: 4p
+SELECT tesztak.id, tesztak.nev, tesztak.kiszereles, kategoriak.nev as kategoria, SUM(rendeleselemek.mennyiseg) as szumma_rendeles
+FROM `rendeleselemek` INNER JOIN tesztak ON tesztak.id=rendeleselemek.tesztaId
+INNER JOIN kategoriak ON kategoriak.id=tesztak.kategoriaId
+GROUP BY tesztak.id
+ORDER BY szumma_rendeles DESC
+LIMIT 5;
+
+20: 6p
+SELECT vevok.nev as vevo_neve, SUM(rendeleselemek.mennyiseg*rendeleselemek.egysegAr) as szumma_ar
+FROM `rendeleselemek` INNER JOIN rendelesek ON rendeleselemek.rendelesId=rendelesek.id
+INNER JOIN vevok ON rendelesek.vevoId=vevok.id
+GROUP BY vevok.id
+ORDER BY szumma_ar DESC
+LIMIT 1;

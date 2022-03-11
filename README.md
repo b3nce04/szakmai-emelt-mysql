@@ -1,2 +1,2 @@
-# szakmai-kozep-mysql
- Szakmai infó érettségi adatbázis része megoldva (2017-)
+# szakmai-emelt-mysql
+ Szakmai infó érettségi (emelt) adatbázis része megoldva (2017-)
